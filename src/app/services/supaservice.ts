@@ -406,4 +406,19 @@ async getProfilesSupabase(): Promise<{ id: string }[]> {
 getSearchObservable(): Observable<string> {
   return this.searchSubject.asObservable();
 }
+
+async getMyProfile(userId: string): Promise<{ id: string; role: string } | null> {
+  const { data, error } = await this.supabase
+    .from('profiles')
+    .select('id, role')
+    .eq('id', userId)
+    .single();
+
+  if (error) {
+    console.error('Error obteniendo perfil:', error);
+    return null;
+  }
+
+  return data;
+}
 }
