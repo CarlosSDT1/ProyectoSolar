@@ -1,0 +1,94 @@
+import { Component, inject, signal } from '@angular/core';
+import PlantasList from "../plantas-list/plantas-list";
+import { AdminTablaEdit } from "../admin-tabla-edit/admin-tabla-edit";
+import { planta } from '../../interface/planta.interface';
+import { Supaservice } from '../../services/supaservice';
+
+type ProfileOption = {
+  id: string;
+};
+
+@Component({
+  selector: 'app-admin-tabla',
+  imports: [PlantasList, AdminTablaEdit],
+  templateUrl: './admin-tabla.html',
+})
+export default class AdminTabla {
+  private supaservice = inject(Supaservice);
+
+  currentPlanta = signal<planta>({} as planta);
+  showEditForm = signal<boolean>(false);
+  profiles = signal<ProfileOption[]>([]);
+  refreshList = signal<number>(0);
+
+  constructor() {
+    this.loadProfiles();
+  }
+
+  async loadProfiles() {
+    try {
+      const data = await this.supaservice.getProfilesSupabase();
+      this.profiles.set(data);
+    } catch (error) {
+      console.error('Error cargando profiles:', error);
+    }
+  }
+
+  onAction(event: {action: 'editar' | 'eliminar' | 'nueva', planta: any}) {
+    console.log('Acción recibida:', event);
+
+    if (event.action === 'nueva') {
+      this.currentPlanta.set({} as planta);
+      this.showEditForm.set(true);
+    } else if (event.action === 'editar') {
+      this.currentPlanta.set(event.planta);
+      this.showEditForm.set(true);
+    } else if (event.action === 'eliminar') {
+      this.deletePlanta(event.planta.id);
+    }
+  }
+
+  async deletePlanta(id: number) {
+  try {
+    await this.supaservice.deletePlanta(id);
+    this.refreshList.update(v => v + 1);
+    console.log('Planta eliminada');
+  } catch (error) {
+    console.error('Error eliminando planta:', error);
+  }
+}
+
+  async onSaved(data: any) {
+  try {
+    const payload = {
+      nom: data.nom,
+      ubicacion: data.ubicacion,
+      capacitat: data.capacitat,
+      user: data.user,
+      foto: data.foto,
+      favorite: data.favorite,
+    };
+
+    if (!data.id || data.id === 0) {
+      await this.supaservice.createPlanta(payload);
+      console.log('Planta creada');
+    } else {
+      await this.supaservice.updatePlanta(data.id, payload);
+      console.log('Planta actualizada');
+    }
+
+    this.refreshList.update(v => v + 1);
+
+    this.showEditForm.set(false);
+    this.currentPlanta.set({} as planta);
+
+  } catch (error) {
+    console.error('Error guardando planta:', error);
+  }
+}
+
+  onCancelled() {
+    this.showEditForm.set(false);
+    this.currentPlanta.set({} as planta);
+  }
+}

@@ -1,0 +1,36 @@
+
+  <td >
+    @if (planta().foto) {
+      <img [src]="planta().foto"
+          [alt]="planta().nom"
+          class="w-14 h-14 object-cover rounded">
+    } @else {
+      <div class="w-14 h-14 bg-gray-200 rounded flex items-center justify-center">
+        <span class="text-gray-400 text-2xl">⚡</span>
+      </div>
+    }
+  </td>
+  <td class="font-medium">{{ planta().nom }}</td>
+  <td style="text-align: center;">
+    <span class="text-xs font-mono" >
+      {{ planta().ubicacion.latitude | number:'1.4-4' }},<br>
+      {{ planta().ubicacion.longitude | number:'1.4-4' }}
+    </span>
+  </td>
+  <td style="text-align: center;">
+    <span class="badge badge-primary">
+      {{ planta().user }}
+    </span>
+  </td>
+  <td style="text-align: center;">
+    <span class="text-sm">
+      {{ planta().created_at | date:'dd/MM/yyyy' }}
+    </span>
+  </td>
+  <td style="text-align: center;">
+
+    <button class="btn btn-primary" routerLink="/planta/{{planta().id}}">Información</button>
+    <button type="button" class="btn btn-secondary" (click)="editar()">Editar</button>
+    <button type="button" class="btn btn-info" (click)="eliminar()">Eliminar</button>
+
+  </td>

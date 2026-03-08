@@ -1,0 +1,60 @@
+<section class="mx-10 "
+>
+  @if (planta().foto) {
+      <img [src]="planta().foto"
+          [alt]="planta().nom"
+          class="w-60 h-34 object-cover rounded">
+    } @else {
+      <div class="w-34 h-34 bg-gray-200 rounded flex items-center justify-center">
+        <span class="text-gray-400 text-2xl">⚡</span>
+      </div>
+    }
+  <h1 class="text-3xl">ID: {{ planta()!.id }}</h1>
+  <h1 class="text-3xl">Nombre: {{ planta()!.nom }}</h1>
+  <h2 class="text-3xl">Dueño: {{ planta!().user }}</h2>
+  <h3 class="text-3xl">Latitud: {{ planta!().ubicacion.latitude | number:'1.4-4' }}</h3>
+  <h3 class="text-3xl">Longitud: {{ planta!().ubicacion.longitude | number:'1.4-4' }}</h3>
+
+</section>
+
+<section class="mt-5">
+  <div class="overflow-x-auto">
+    <table class="table table-zebra w-full">
+      <thead>
+        <tr class="bg-base-200">
+
+          <th>iD:</th>
+          <th>Fecha de creación:</th>
+          <th>Generacion</th>
+          <th>Consumo</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (registre of registres(); track registre.id;) {
+          <tr>
+            <td>{{ registre.id }}</td>
+            <td>{{ registre.created_at | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>{{ registre.generacio }} kW</td>
+            <td>{{ registre.consum }} kW</td>
+
+          </tr>
+
+        }
+        @empty {
+          <tr>
+            <td colspan="7" class="text-center py-8">
+              No hay Registros de esta planta.
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    @if (totalPages() > 1) {
+      <div class="mt-4 flex justify-center">
+        <app-pagination
+          [pages]="totalPages()"
+          [currentPage]="currentPage()" />
+      </div>
+    }
+  </div>
+</section>

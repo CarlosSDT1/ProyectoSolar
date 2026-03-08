@@ -1,0 +1,12 @@
+<app-plantas-list
+  [refreshTrigger]="refreshList()"
+  (action)="onAction($event)"/>
+
+@if (showEditForm()) {
+  <app-admin-tabla-edit
+    [planta]="currentPlanta()"
+    [profiles]="profiles()"
+    (saved)="onSaved($event)"
+    (cancelled)="onCancelled()">
+  </app-admin-tabla-edit>
+}

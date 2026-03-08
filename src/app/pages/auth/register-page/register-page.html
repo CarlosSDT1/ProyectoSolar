@@ -1,0 +1,189 @@
+<div class=" flex flex-col items-center justify-center p-4">
+  <div class="w-full max-w-sm">
+    <!-- Logo/Icono -->
+    <div class="text-center mb-8">
+      <h2 class="text-2xl font-bold">Crear cuenta</h2>
+      <p class="text-gray-600 mt-2">Completa tus datos para registrarte</p>
+    </div>
+
+    <form autocomplete="off" [formGroup]="myForm" (ngSubmit)="onSubmit()" class="space-y-5">
+
+      <!-- Campo Nombre
+      <div>
+        <label class="block text-sm font-medium mb-1.5">
+          Nombre completo
+        </label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="fas fa-user text-gray-400"></i>
+          </div>
+          <input
+            type="text"
+            placeholder="Nombre y apellido"
+            class="pl-10 input input-bordered w-full focus:ring-2 focus:ring-primary focus:border-transparent"
+            formControlName="name">
+        </div>
+        @if (myForm.get('name')?.invalid && myForm.get('name')?.touched) {
+          <p class="mt-1.5 text-sm text-error flex items-center">
+            <i class="fas fa-exclamation-triangle mr-1.5"></i>
+            {{ formUtils.getFieldError(myForm, 'name') }}
+          </p>
+        }
+      </div>
+      -->
+
+      <!-- Campo Email -->
+      <div>
+        <label class="block text-sm font-medium mb-1.5">
+          Correo electrónico
+        </label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="fas fa-envelope text-gray-400"></i>
+          </div>
+          <input
+            type="email"
+            placeholder="tu@email.com"
+            class="pl-10 input input-bordered w-full focus:ring-2 focus:ring-primary focus:border-transparent"
+            formControlName="email">
+        </div>
+        @if (myForm.get('email')?.invalid && myForm.get('email')?.touched) {
+          <p class="mt-1.5 text-sm text-error flex items-center">
+            <i class="fas fa-exclamation-triangle mr-1.5"></i>
+            {{ formUtils.getFieldError(myForm, 'email') }}
+          </p>
+        }
+      </div>
+
+      <!-- Campo Usuario
+      <div>
+        <label class="block text-sm font-medium mb-1.5">
+          Usuario
+        </label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="fas fa-at text-gray-400"></i>
+          </div>
+          <input
+            type="text"
+            placeholder="Nombre de usuario"
+            class="pl-10 input input-bordered w-full focus:ring-2 focus:ring-primary focus:border-transparent"
+            formControlName="username">
+        </div>
+        @if (myForm.get('username')?.invalid && myForm.get('username')?.touched) {
+          <p class="mt-1.5 text-sm text-error flex items-center">
+            <i class="fas fa-exclamation-triangle mr-1.5"></i>
+            {{ formUtils.getFieldError(myForm, 'username') }}
+          </p>
+        }
+      </div>
+      -->
+
+      <!-- Campo Contraseña -->
+      <div>
+        <label class="block text-sm font-medium mb-1.5">
+          Contraseña
+        </label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="fas fa-lock text-gray-400"></i>
+          </div>
+          <input
+            type="password"
+            placeholder="Mínimo 6 caracteres"
+            class="pl-10 input input-bordered w-full focus:ring-2 focus:ring-primary focus:border-transparent"
+            formControlName="password">
+        </div>
+        @if (myForm.get('password')?.invalid && myForm.get('password')?.touched) {
+          <p class="mt-1.5 text-sm text-error flex items-center">
+            <i class="fas fa-exclamation-triangle mr-1.5"></i>
+            {{ formUtils.getFieldError(myForm, 'password') }}
+          </p>
+        }
+      </div>
+
+      <!-- Campo Confirmar Contraseña -->
+      <div>
+        <label class="block text-sm font-medium mb-1.5">
+          Confirmar contraseña
+        </label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="fas fa-lock text-gray-400"></i>
+          </div>
+          <input
+            type="password"
+            placeholder="Repite tu contraseña"
+            class="pl-10 input input-bordered w-full focus:ring-2 focus:ring-primary focus:border-transparent"
+            formControlName="password2">
+        </div>
+        @if (myForm.get('password2')?.invalid && myForm.get('password2')?.touched) {
+          <p class="mt-1.5 text-sm text-error flex items-center">
+            <i class="fas fa-exclamation-triangle mr-1.5"></i>
+            {{ formUtils.getFieldError(myForm, 'password2') }}
+          </p>
+        }
+      </div>
+
+      <!-- Error general del formulario -->
+      @if (myForm.errors && myForm.touched) {
+        <div class="mt-1.5 text-sm text-error flex items-center">
+          <div>
+            <i class="fas fa-times-circle"></i>
+            <span>Las contraseñas no coinciden</span>
+          </div>
+        </div>
+      }
+
+      <!-- Botón de envío -->
+      <button
+        class="btn btn-primary w-full mt-6 h-12 text-base"
+        type="submit"
+        [disabled]="myForm.invalid"
+        [class.opacity-50]="myForm.invalid"
+        [class.cursor-not-allowed]="myForm.invalid">
+        <i class="fas fa-user-plus mr-2"></i>
+        Crear cuenta
+      </button>
+
+      <!-- Enlace a login -->
+      <div class="text-center mt-4">
+        <p class="">
+          ¿Ya tienes cuenta?
+          <a routerLink="/login" class="link link-primary font-semibold ml-1">Inicia sesión</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Panel de depuración (opcional - puedes ocultarlo en producción) -->
+
+<div class="mt-5">
+    <div class="card">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">Información de depuración</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Estado del formulario:</h6>
+                    <ul class="list-unstyled">
+                        <li><strong>Válido:</strong> {{ myForm.valid | json }}</li>
+                        <li><strong>Estado:</strong> {{ myForm.status }}</li>
+                        <li><strong>Modificado:</strong> {{ myForm.touched | json }}</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h6>Errores por campo:</h6>
+                    <ul class="list-unstyled">
+                        <li><strong>Nombre:</strong> {{ myForm.get('name')?.errors | json }}</li>
+                        <li><strong>Email:</strong> {{ myForm.get('email')?.errors | json }}</li>
+                        <li><strong>Usuario:</strong> {{ myForm.get('username')?.errors | json }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

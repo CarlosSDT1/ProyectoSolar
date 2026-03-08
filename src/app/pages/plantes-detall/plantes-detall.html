@@ -1,0 +1,11 @@
+@if (planta()) {
+  <section>
+    <app-planta-information
+      [planta]="planta()!"
+      [registres]="registres()"
+      [totalPages]="totalPages()"
+      [currentPage]="currentPage()" />
+  </section>
+} @else {
+  <app-not-found/>
+}

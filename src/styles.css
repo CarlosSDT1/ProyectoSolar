@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+   themes: dracula --default, dark --prefersabyss, light , synthwave ;
+ }
+
+.menu li a.active {
+  background-color: hsl(var(--p));
+  color: red;
+  font-weight: 600;
+}
+
