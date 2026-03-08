@@ -24,6 +24,7 @@ export const routes: Routes = [
   {
     path:'tabla',
     component:AdminTabla,
+    canActivate:[userGuard],
   },
   {
     path:'login',
