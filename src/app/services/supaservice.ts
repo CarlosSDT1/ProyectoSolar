@@ -480,19 +480,19 @@ export class Supaservice {
   return publicUrl;
 }
 
-  async getProfilesSupabase(): Promise<{ id: string }[]> {
-    const { data, error } = await this.supabase
-      .from('profiles')
-      .select('id')
-      .order('id', { ascending: true });
+  async getProfilesSupabase(): Promise<{ id: string; username: string | null }[]> {
+  const { data, error } = await this.supabase
+    .from('profiles')
+    .select('id, username')
+    .order('username', { ascending: true });
 
-    if (error) {
-      console.error('Error obteniendo profiles:', error);
-      throw error;
-    }
-
-    return data || [];
+  if (error) {
+    console.error('Error obteniendo profiles:', error);
+    throw error;
   }
+
+  return data || [];
+}
 
   async getMyProfile(userId: string): Promise<{ id: string; role: string } | null> {
     const { data, error } = await this.supabase
@@ -508,4 +508,76 @@ export class Supaservice {
 
     return data;
   }
+
+  async getProfileById(userId: string): Promise<{
+  id: string;
+  username: string | null;
+  avatar_url: string | null;
+  full_name: string | null;
+  website: string | null;
+  role: string;
+} | null> {
+  const { data, error } = await this.supabase
+    .from('profiles')
+    .select('id, username, avatar_url, full_name, website, role')
+    .eq('id', userId)
+    .single();
+
+  if (error) {
+    console.error('Error obteniendo profile:', error);
+    return null;
+  }
+
+  return data;
+}
+
+async updateProfile(
+  userId: string,
+  profileData: {
+    username?: string | null;
+    avatar_url?: string | null;
+    full_name?: string | null;
+    website?: string | null;
+  }
+) {
+  const { data, error } = await this.supabase
+    .from('profiles')
+    .update({
+      ...profileData,
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', userId)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error actualizando profile:', error);
+    throw error;
+  }
+
+  return data;
+}
+
+async uploadAvatar(file: File, userId: string): Promise<string> {
+  const fileExt = file.name.split('.').pop();
+  const fileName = `${userId}-${Date.now()}.${fileExt}`;
+  const filePath = `avatars/${fileName}`;
+
+  const { error: uploadError } = await this.supabase.storage
+    .from('imagenes')
+    .upload(filePath, file);
+
+  if (uploadError) {
+    console.error('Error subiendo avatar:', uploadError);
+    throw uploadError;
+  }
+
+  const {
+    data: { publicUrl }
+  } = this.supabase.storage
+    .from('imagenes')
+    .getPublicUrl(filePath);
+
+  return publicUrl;
+}
 }

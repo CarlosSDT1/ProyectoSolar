@@ -1,6 +1,7 @@
 <app-plantas-list
   [refreshTrigger]="refreshList()"
-  (action)="onAction($event)"/>
+  [profiles]="profiles()"
+  (action)="onAction($event)" />
 
 @if (showEditForm()) {
   <app-admin-tabla-edit

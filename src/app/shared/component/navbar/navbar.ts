@@ -16,16 +16,15 @@ export class Navbar {
   private authService = inject(AuthService);
   private router: Router = inject(Router);
 
-  session = signal<Session|null>({} as Session);
+  session = signal<Session | null>({} as Session);
 
-  searchString= '';
+  searchString = '';
 
-
-  search($event: string){
+  search($event: string) {
     this.supaService.setSearchString($event);
   }
 
-  constructor(){
+  constructor() {
     this.authService.authChangesObservable().subscribe(({ event, session }) => {
       console.log('Auth event:', event);
       console.log('Session:', session);
@@ -33,16 +32,19 @@ export class Navbar {
     });
   }
 
-  logout(){
+  logout() {
     this.authService.logout()
       .then(() => {
         console.log('Logout exitoso');
-
         this.router.navigate(['/login']);
       })
       .catch((error) => {
         console.error('Error en logout:', error);
         this.router.navigate(['/login']);
       });
+  }
+
+  goToProfile() {
+    this.router.navigate(['/profile']);
   }
 }

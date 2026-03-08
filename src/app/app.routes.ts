@@ -7,6 +7,7 @@ import { LoginPage } from './pages/auth/login-page/login-page';
 import { RegisterPage } from './pages/auth/register-page/register-page';
 import { userGuard } from './guards/user-guard-guard';
 import AdminTabla from './components/admin-tabla/admin-tabla';
+import ProfilePage from './components/profile-page/profile-page';
 
 
 export const routes: Routes = [
@@ -25,6 +26,11 @@ export const routes: Routes = [
     path:'tabla',
     component:AdminTabla,
     canActivate:[userGuard],
+  },
+  {
+    path: 'profile',
+    component: ProfilePage,
+    canActivate: [userGuard],
   },
   {
     path:'login',

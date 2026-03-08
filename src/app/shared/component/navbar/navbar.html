@@ -1,6 +1,5 @@
 <div class="navbar bg-base-100 shadow-sm">
   <div class="navbar-start">
-    <!-- Menú hamburguesa -->
     <div class="dropdown">
       <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -34,9 +33,6 @@
     </div>
 
     <div class="divider divider-horizontal mx-2"></div>
-
-    <!-- Login/Register -->
-
   </div>
 
   <div class="navbar-center">
@@ -46,7 +42,6 @@
   </div>
 
   <div class="navbar-end">
-    <!--sesión: mostrar usuario y logout -->
     @if (session()) {
       <div class="flex items-center gap-4">
         <form class="" role="search">
@@ -60,15 +55,19 @@
             (ngModelChange)="search($event)"/>
         </form>
 
-        <span>{{ session()?.user?.email }}</span>
+        <button
+          type="button"
+          class="btn btn-ghost"
+          (click)="goToProfile()">
+          {{ session()?.user?.email }}
+        </button>
+
         <button (click)="logout()" class="text-error">
           <i class="fas fa-sign-out-alt mr-2"></i>
           Cerrar Sesión
         </button>
       </div>
-    }
-    <!-- NO hay sesión -->
-    @else {
+    } @else {
       <div class="flex items-center gap-4">
         <a [routerLink]="['/login']"
            routerLinkActive="active"

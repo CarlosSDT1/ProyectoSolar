@@ -7,6 +7,7 @@ import { AuthService } from '../../services/authservice';
 
 type ProfileOption = {
   id: string;
+  username: string | null;
 };
 
 @Component({

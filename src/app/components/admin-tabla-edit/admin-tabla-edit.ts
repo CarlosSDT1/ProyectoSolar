@@ -34,7 +34,7 @@ type PlantaFormModel = {
 })
 export class AdminTablaEdit {
   planta = input.required<planta>();
-  profiles = input<{ id: string }[]>([]);
+  profiles = input<{ id: string; username: string | null }[]>([]);
 
   saved = output<{ data: PlantaFormModel; file: File | null }>();
   cancelled = output<void>();

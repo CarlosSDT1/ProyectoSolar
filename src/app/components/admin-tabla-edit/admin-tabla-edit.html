@@ -45,7 +45,9 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium mb-1.5">Usuario</label>
+            <label class="block text-sm font-medium mb-1.5">
+              Usuario
+            </label>
 
             <select
               class="select select-bordered w-full"
@@ -54,7 +56,9 @@
               <option value="">Selecciona un usuario</option>
 
               @for (profile of profiles(); track profile.id) {
-                <option [value]="profile.id">{{ profile.id }}</option>
+                <option [value]="profile.id">
+                  {{ profile.username || profile.id }}
+                </option>
               }
             </select>
 

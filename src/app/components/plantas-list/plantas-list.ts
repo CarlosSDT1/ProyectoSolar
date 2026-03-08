@@ -1,11 +1,15 @@
 import { Component, effect, inject, input, output, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import Tabla from "../tabla/tabla";
 import { Supaservice } from '../../services/supaservice';
 import { planta } from '../../interface/planta.interface';
 import { Pagination } from "../../shared/component/pagination/pagination";
 import { PaginationService } from "../../shared/component/pagination/pagination.service";
 import { firstValueFrom } from 'rxjs';
+
+type ProfileOption = {
+  id: string;
+  username: string | null;
+};
 
 @Component({
   selector: 'app-plantas-list',
@@ -17,16 +21,13 @@ export default class PlantasList {
   private paginationService = inject(PaginationService);
 
   refreshTrigger = input<number>(0);
+  profiles = input<ProfileOption[]>([]);
 
   plantas = signal<planta[]>([]);
   totalPages = signal<number>(0);
   totalPlantas = signal<number>(0);
 
   currentPage = this.paginationService.currentPage;
-
-  searchTerm = toSignal(this.supaservice.getSearchObservable(), {
-    initialValue: ''
-  });
 
   action = output<{action: 'editar' | 'eliminar' | 'nueva', planta: planta}>();
 
@@ -41,8 +42,7 @@ export default class PlantasList {
       this.loadPlantas(this.currentPage());
     });
 
-    effect(() => {
-      this.searchTerm();
+    this.supaservice.getSearchObservable().subscribe(() => {
       this.loadPlantas(1);
     });
   }
