@@ -73,8 +73,11 @@ export default class AdminTabla {
     }
   }
 
-  async onSaved(data: any) {
+  async onSaved(event: { data: any; file: File | null }) {
     try {
+      const data = event.data;
+      const file = event.file;
+
       const payload = {
         nom: data.nom,
         ubicacion: data.ubicacion,
@@ -84,16 +87,22 @@ export default class AdminTabla {
         favorite: data.favorite,
       };
 
+      let savedPlanta: planta;
+
       if (!data.id || data.id === 0) {
-        await this.supaservice.createPlanta(payload);
+        savedPlanta = await this.supaservice.createPlanta(payload);
         console.log('Planta creada');
       } else {
-        await this.supaservice.updatePlanta(data.id, payload);
+        savedPlanta = await this.supaservice.updatePlanta(data.id, payload);
         console.log('Planta actualizada');
       }
 
-      this.refreshList.update(v => v + 1);
+      if (file) {
+        const publicUrl = await this.supaservice.uploadImage(file, savedPlanta.id);
+        await this.supaservice.updatePlanta(savedPlanta.id, { foto: publicUrl });
+      }
 
+      this.refreshList.update(v => v + 1);
       this.showEditForm.set(false);
       this.currentPlanta.set({} as planta);
 

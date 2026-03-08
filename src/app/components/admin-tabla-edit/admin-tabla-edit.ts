@@ -26,10 +26,6 @@ type PlantaFormModel = {
   capacitat: number;
 };
 
-type ProfileOption = {
-  id: string;
-};
-
 @Component({
   selector: 'app-admin-tabla-edit',
   standalone: true,
@@ -38,9 +34,9 @@ type ProfileOption = {
 })
 export class AdminTablaEdit {
   planta = input.required<planta>();
-  profiles = input<ProfileOption[]>([]);
+  profiles = input<{ id: string }[]>([]);
 
-  saved = output<PlantaFormModel>();
+  saved = output<{ data: PlantaFormModel; file: File | null }>();
   cancelled = output<void>();
 
   imagePreview: WritableSignal<string | ArrayBuffer | null> = signal(null);
@@ -51,7 +47,7 @@ export class AdminTablaEdit {
 
     return {
       id: p?.id ?? 0,
-      created_at: p?.created_at ?? '',
+      created_at: (p as any)?.created_at ?? '',
       nom: p?.nom ?? '',
       ubicacion: p?.ubicacion ?? { latitude: 0, longitude: 0 },
       capacitat: p?.capacitat ?? 0,
@@ -61,9 +57,7 @@ export class AdminTablaEdit {
     };
   });
 
-
   plantaForm = form(this.plantaModel, (schema) => {
-
     required(schema.nom, { message: 'El nombre es obligatorio' });
     minLength(schema.nom, 3, { message: 'Mínimo 3 caracteres' });
 
@@ -72,36 +66,28 @@ export class AdminTablaEdit {
     max(schema.capacitat, 10000, { message: 'Capacidad máxima 10000 kW' });
 
     required(schema.user, { message: 'El usuario es obligatorio' });
-    minLength(schema.user, 3, { message: 'Mínimo 3 caracteres' });
-
 
     required(schema.ubicacion.latitude, { message: 'Latitud obligatoria' });
     min(schema.ubicacion.latitude, -90, { message: 'Latitud mínima -90' });
     max(schema.ubicacion.latitude, 90, { message: 'Latitud máxima 90' });
 
-
     required(schema.ubicacion.longitude, { message: 'Longitud obligatoria' });
     min(schema.ubicacion.longitude, -180, { message: 'Longitud mínima -180' });
     max(schema.ubicacion.longitude, 180, { message: 'Longitud máxima 180' });
-
   });
 
-
   onFileSelected(event: Event) {
-
     const input = event.target as HTMLInputElement;
 
     if (!input.files || input.files.length === 0) return;
 
     const file = input.files[0];
 
-    // validar tipo
     if (!file.type.startsWith('image/')) {
       alert('Selecciona una imagen válida');
       return;
     }
 
-    // validar tamaño
     if (file.size > 5 * 1024 * 1024) {
       alert('La imagen no debe superar los 5MB');
       return;
@@ -110,29 +96,22 @@ export class AdminTablaEdit {
     this.imageFile.set(file);
 
     const reader = new FileReader();
-
     reader.onload = () => {
       this.imagePreview.set(reader.result);
     };
-
     reader.readAsDataURL(file);
   }
 
-
-  // SUBMIT
   onSubmit() {
-
     const data = this.plantaModel();
 
-    console.log('Formulario enviado:', data);
-
-    this.saved.emit(data);
+    this.saved.emit({
+      data,
+      file: this.imageFile()
+    });
   }
 
-
-  // CANCELAR
   onCancel() {
     this.cancelled.emit();
   }
-
 }

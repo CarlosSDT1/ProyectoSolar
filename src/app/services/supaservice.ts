@@ -460,25 +460,25 @@ export class Supaservice {
   }
 
   async uploadImage(file: File, plantaId: number): Promise<string> {
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${plantaId}-${Date.now()}.${fileExt}`;
-    const filePath = `plantas/${fileName}`;
+  const fileExt = file.name.split('.').pop();
+  const fileName = `${plantaId}-${Date.now()}.${fileExt}`;
+  const filePath = `plantas/${fileName}`;
 
-    const { error: uploadError } = await this.supabase.storage
-      .from('imagenes')
-      .upload(filePath, file);
+  const { error: uploadError } = await this.supabase.storage
+    .from('imagenes')
+    .upload(filePath, file);
 
-    if (uploadError) {
-      console.error('Error subiendo imagen:', uploadError);
-      throw uploadError;
-    }
-
-    const { data: { publicUrl } } = this.supabase.storage
-      .from('imagenes')
-      .getPublicUrl(filePath);
-
-    return publicUrl;
+  if (uploadError) {
+    console.error('Error subiendo imagen:', uploadError);
+    throw uploadError;
   }
+
+  const { data: { publicUrl } } = this.supabase.storage
+    .from('imagenes')
+    .getPublicUrl(filePath);
+
+  return publicUrl;
+}
 
   async getProfilesSupabase(): Promise<{ id: string }[]> {
     const { data, error } = await this.supabase
