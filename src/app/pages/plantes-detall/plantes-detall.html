@@ -3,9 +3,24 @@
     <app-planta-information
       [planta]="planta()!"
       [registres]="registres()"
+      [chartRegistres]="chartRegistres()"
       [totalPages]="totalPages()"
-      [currentPage]="currentPage()" />
+      [currentPage]="currentPage()"
+      [canManage]="canManage()"
+      (newRegistre)="openNewRegistreForm()"
+      (editRegistre)="editRegistre($event)"
+      (deleteRegistre)="deleteRegistre($event)" />
   </section>
+
+  @if (showRegistreForm() && canManage()) {
+    <section class="mt-4">
+      <app-admin-registre-edit
+        [plantaId]="planta()!.id"
+        [registre]="currentRegistre()"
+        (saved)="onRegistreSaved($event)"
+        (cancelled)="onRegistreCancelled()" />
+    </section>
+  }
 } @else {
   <app-not-found/>
 }

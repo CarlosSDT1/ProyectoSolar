@@ -1,20 +1,40 @@
-<section class="mx-10 "
->
+<section class="mx-10">
   @if (planta().foto) {
-      <img [src]="planta().foto"
-          [alt]="planta().nom"
-          class="w-60 h-34 object-cover rounded">
-    } @else {
-      <div class="w-34 h-34 bg-gray-200 rounded flex items-center justify-center">
-        <span class="text-gray-400 text-2xl">⚡</span>
-      </div>
-    }
+    <img [src]="planta().foto"
+        [alt]="planta().nom"
+        class="w-60 h-34 object-cover rounded">
+  } @else {
+    <div class="w-34 h-34 bg-gray-200 rounded flex items-center justify-center">
+      <span class="text-gray-400 text-2xl">⚡</span>
+    </div>
+  }
+
   <h1 class="text-3xl">ID: {{ planta()!.id }}</h1>
   <h1 class="text-3xl">Nombre: {{ planta()!.nom }}</h1>
-  <h2 class="text-3xl">Dueño: {{ planta!().user }}</h2>
-  <h3 class="text-3xl">Latitud: {{ planta!().ubicacion.latitude | number:'1.4-4' }}</h3>
-  <h3 class="text-3xl">Longitud: {{ planta!().ubicacion.longitude | number:'1.4-4' }}</h3>
+  <h2 class="text-3xl">Dueño: {{ planta()!.user }}</h2>
+  <h3 class="text-3xl">Latitud: {{ planta()!.ubicacion.latitude | number:'1.4-4' }}</h3>
+  <h3 class="text-3xl">Longitud: {{ planta()!.ubicacion.longitude | number:'1.4-4' }}</h3>
+</section>
 
+<section class="mx-10 mt-8">
+  <div class="card bg-base-100 shadow-sm border p-4">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-bold">Gráfico de generación y consumo</h2>
+
+      @if (canManage()) {
+        <button
+          class="btn btn-success"
+          type="button"
+          (click)="createRegistre()">
+          Nuevo Registro
+        </button>
+      }
+    </div>
+
+    <div class="w-full" style="height: 400px;">
+      <canvas #grafico></canvas>
+    </div>
+  </div>
 </section>
 
 <section class="mt-5">
@@ -22,11 +42,13 @@
     <table class="table table-zebra w-full">
       <thead>
         <tr class="bg-base-200">
-
-          <th>iD:</th>
+          <th>ID:</th>
           <th>Fecha de creación:</th>
-          <th>Generacion</th>
+          <th>Generación</th>
           <th>Consumo</th>
+          @if (canManage()) {
+            <th>Acciones</th>
+          }
         </tr>
       </thead>
       <tbody>
@@ -37,8 +59,24 @@
             <td>{{ registre.generacio }} kW</td>
             <td>{{ registre.consum }} kW</td>
 
-          </tr>
+            @if (canManage()) {
+              <td class="flex gap-2">
+                <button
+                  type="button"
+                  class="btn btn-secondary btn-sm"
+                  (click)="onEditRegistre(registre)">
+                  Editar
+                </button>
 
+                <button
+                  type="button"
+                  class="btn btn-error btn-sm"
+                  (click)="onDeleteRegistre(registre)">
+                  Eliminar
+                </button>
+              </td>
+            }
+          </tr>
         }
         @empty {
           <tr>
@@ -49,6 +87,7 @@
         }
       </tbody>
     </table>
+
     @if (totalPages() > 1) {
       <div class="mt-4 flex justify-center">
         <app-pagination

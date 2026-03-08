@@ -1,0 +1,72 @@
+<div class="container mt-4">
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      <h3 class="card-title mb-0">
+        {{ isEditing() ? 'Editar Registro' : 'Nuevo Registro' }}
+      </h3>
+    </div>
+
+    <div class="card-body">
+      <form (submit)="onSubmit(); $event.preventDefault()">
+        <div class="row g-3">
+
+          <div>
+            <label class="block text-sm font-medium mb-1.5">
+              Generación
+            </label>
+
+            <input
+              type="number"
+              class="input input-bordered w-full"
+              placeholder="Generación en kW"
+              [formField]="registreForm.generacio">
+
+            @if (registreForm.generacio().touched() && !registreForm.generacio().valid()) {
+              <ul class="alert alert-error">
+                @for (error of registreForm.generacio().errors(); track error) {
+                  <li>{{ error.message }}</li>
+                }
+              </ul>
+            }
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-1.5">
+              Consumo
+            </label>
+
+            <input
+              type="number"
+              class="input input-bordered w-full"
+              placeholder="Consumo en kW"
+              [formField]="registreForm.consum">
+
+            @if (registreForm.consum().touched() && !registreForm.consum().valid()) {
+              <ul class="alert alert-error">
+                @for (error of registreForm.consum().errors(); track error) {
+                  <li>{{ error.message }}</li>
+                }
+              </ul>
+            }
+          </div>
+
+        </div>
+
+        <div class="mt-4 d-flex justify-content-end gap-2">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="onCancel()">
+            Cancelar
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-primary">
+            {{ isEditing() ? 'Guardar Cambios' : 'Guardar Registro' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
