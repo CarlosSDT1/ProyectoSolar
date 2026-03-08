@@ -44,7 +44,7 @@
   <div class="navbar-end">
     @if (session()) {
       <div class="flex items-center gap-4">
-        <form class="" role="search">
+        <form role="search">
           <input
             class="input input-bordered input-sm"
             type="search"
@@ -57,9 +57,21 @@
 
         <button
           type="button"
-          class="btn btn-ghost"
+          class="btn btn-ghost flex items-center gap-2"
           (click)="goToProfile()">
-          {{ session()?.user?.email }}
+
+          @if (profile()?.avatar_url) {
+            <img
+              [src]="profile()!.avatar_url!"
+              alt="Avatar"
+              class="w-8 h-8 rounded-full object-cover border">
+          } @else {
+            <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm">
+              👤
+            </div>
+          }
+
+          <span>{{ getDisplayName() }}</span>
         </button>
 
         <button (click)="logout()" class="text-error">
