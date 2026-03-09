@@ -7,9 +7,8 @@ import { AuthService } from '../../../services/authservice';
 
 @Component({
   selector: 'register-page',
-  imports: [JsonPipe, ReactiveFormsModule,RouterLink],
+  imports: [JsonPipe, ReactiveFormsModule, RouterLink],
   templateUrl: './register-page.html',
-
 })
 export class RegisterPage {
 
@@ -21,40 +20,76 @@ export class RegisterPage {
   registerError: string | null = null;
 
   myForm: FormGroup = this.fb.group({
-    /*name: [
-      ,
-      [Validators.required, Validators.pattern(FormUtils.namePattern)],
+    username: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(4),
+        Validators.pattern(FormUtils.notOnlySpacesPattern)
+      ]
+    ],
 
-    ],*/
-    email: ['@gmail.com', [Validators.required, Validators.pattern(FormUtils.emailPattern)],[FormUtils.checkingServerResponse]],
-    /*username: [, [Validators.required, Validators.minLength(6),Validators.pattern(FormUtils.notOnlySpacesPattern),FormUtils.notStrider]],*/
-    password: [, [Validators.required, Validators.minLength(6)]],
-    password2: [, [Validators.required]],
-    }, {
+    email: [
+      '@gmail.com',
+      [
+        Validators.required,
+        Validators.pattern(FormUtils.emailPattern)
+      ],
+      [FormUtils.checkingServerResponse]
+    ],
+
+    password: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(6)
+      ]
+    ],
+
+    password2: [
+      '',
+      [
+        Validators.required
+      ]
+    ],
+
+  }, {
     validators: [
       FormUtils.isFieldOneEqualFieldTwo('password','password2')
     ],
   });
 
-onSubmit() {
-  this.myForm.markAllAsTouched();
+  onSubmit() {
 
-  const registerData = this.myForm.value;
+    this.myForm.markAllAsTouched();
 
-  this.authService.register(registerData.email, registerData.password)
-    .then((response:any) =>{
+    if (this.myForm.invalid) return;
+
+    const registerData = this.myForm.value;
+
+    this.authService.register(
+      registerData.email,
+      registerData.password,
+      registerData.username
+    )
+    .then((response:any) => {
       console.log('Register exitoso:', response);
-        this.router.navigate(['/login']);
+      this.router.navigate(['/home']);
     })
     .catch((error: { message: string; }) => {
-        console.error('Error en register:', error);
 
-        if (error.message) {
-          this.registerError = 'Correo electrónico o contraseña incorrectos';
-        } else {
-          this.registerError = 'Error al iniciar sesión. Por favor, intenta nuevamente';
-        }
-      });
-  console.log(this.myForm.value)
-}
+      console.error('Error en register:', error);
+
+      if (error.message) {
+        this.registerError = 'Error al registrar el usuario';
+      } else {
+        this.registerError = 'Error al iniciar sesión. Por favor, intenta nuevamente';
+      }
+
+    });
+
+    console.log(this.myForm.value);
+
+  }
+
 }

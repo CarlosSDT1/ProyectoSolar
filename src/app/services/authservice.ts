@@ -17,19 +17,33 @@ export class AuthService {
   });
 }
 
-  async register(email: string, password: string){
-    let { data, error } = await this.supabase.auth.signUp({
-    email: email,
-    password: password
+  async register(email: string, password: string, username: string) {
+  const { data, error } = await this.supabase.auth.signUp({
+    email,
+    password
   });
 
-    if (error) {
-      console.error('Error en Register:', error);
-      throw error;
-    }
-
-    return data;
+  if (error) {
+    console.error('Error en Register:', error);
+    throw error;
   }
+
+  if (data.user) {
+    const { error: profileError } = await this.supabase
+      .from('profiles')
+      .insert({
+        id: data.user.id,
+        username: username
+      });
+
+    if (profileError) {
+      console.error('Error creando perfil:', profileError);
+      throw profileError;
+    }
+  }
+
+  return data;
+}
 
   async login(email: string, password: string) {
     const { data, error } = await this.supabase.auth.signInWithPassword({
