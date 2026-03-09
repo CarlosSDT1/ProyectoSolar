@@ -44,32 +44,34 @@
             }
           </div>
 
-          <div>
-            <label class="block text-sm font-medium mb-1.5">
-              Usuario
-            </label>
+          @if (isAdmin()) {
+            <div>
+              <label class="block text-sm font-medium mb-1.5">
+                Usuario
+              </label>
 
-            <select
-              class="select select-bordered w-full"
-              [formField]="plantaForm.user">
+              <select
+                class="select select-bordered w-full"
+                [formField]="plantaForm.user">
 
-              <option value="">Selecciona un usuario</option>
+                <option value="">Selecciona un usuario</option>
 
-              @for (profile of profiles(); track profile.id) {
-                <option [value]="profile.id">
-                  {{ profile.username || profile.id }}
-                </option>
-              }
-            </select>
-
-            @if (plantaForm.user().touched() && !plantaForm.user().valid()) {
-              <ul class="alert alert-error">
-                @for (error of plantaForm.user().errors(); track error) {
-                  <li>{{ error.message }}</li>
+                @for (profile of profiles(); track profile.id) {
+                  <option [value]="profile.id">
+                    {{ profile.username || profile.id }}
+                  </option>
                 }
-              </ul>
-            }
-          </div>
+              </select>
+
+              @if (plantaForm.user().touched() && !plantaForm.user().valid()) {
+                <ul class="alert alert-error">
+                  @for (error of plantaForm.user().errors(); track error) {
+                    <li>{{ error.message }}</li>
+                  }
+                </ul>
+              }
+            </div>
+          }
 
           <div>
             <label class="block text-sm font-medium mb-1.5">URL Foto</label>

@@ -23,9 +23,11 @@ export default class AdminTabla {
   showEditForm = signal<boolean>(false);
   profiles = signal<ProfileOption[]>([]);
   refreshList = signal<number>(0);
+  isAdmin = signal<boolean>(false);
 
   constructor() {
     this.loadProfiles();
+    this.loadMyRole();
   }
 
   async loadProfiles() {
@@ -34,6 +36,24 @@ export default class AdminTabla {
       this.profiles.set(data);
     } catch (error) {
       console.error('Error cargando profiles:', error);
+    }
+  }
+
+  async loadMyRole() {
+    try {
+      const session = this.authService.loggedSubject.getValue();
+      const uid = session?.user?.id;
+
+      if (!uid) {
+        this.isAdmin.set(false);
+        return;
+      }
+
+      const profile = await this.supaservice.getMyProfile(uid);
+      this.isAdmin.set(profile?.role === 'admin');
+    } catch (error) {
+      console.error('Error cargando rol del usuario:', error);
+      this.isAdmin.set(false);
     }
   }
 

@@ -7,6 +7,7 @@
   <app-admin-tabla-edit
     [planta]="currentPlanta()"
     [profiles]="profiles()"
+    [isAdmin]="isAdmin()"
     (saved)="onSaved($event)"
     (cancelled)="onCancelled()">
   </app-admin-tabla-edit>
