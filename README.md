@@ -4,9 +4,15 @@ Aplicación web desarrollada con **Angular y Supabase** para la gestión de plan
 
 El proyecto permite visualizar plantas solares, registrar datos energéticos, gestionar usuarios y mostrar estadísticas mediante gráficos.
 
+
+
 ---
 
 # Características
+
+## Desplegado
+
+https://proyecto-solar-gold.vercel.app/#/home
 
 ## Autenticación
 
