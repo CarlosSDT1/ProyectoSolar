@@ -189,4 +189,4 @@ http://localhost:4200
 
 # Almacenamiento de imágenes
 
-Las imágenes de plantas y avatares se alma
+Las imágenes de plantas y avatares se almacenan en supabase(Algunas de ellas no todas porque esto lo implemente mas tarde y no me he puesto a descargarlas y cambiarlas a supabase)
