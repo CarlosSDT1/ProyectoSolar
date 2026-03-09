@@ -2,19 +2,7 @@
 
 Aplicación web desarrollada con **Angular y Supabase** para la gestión de plantas solares, usuarios y registros de generación y consumo energético.
 
-El proyecto permite visualizar plantas solares, registrar datos energéticos, gestionar usuarios y mostrar estadísticas mediante gráficos interactivos.
-
----
-
-# Demo
-
-Aplicación desplegada en internet:
-
-https://proyecto-solar.vercel.app
-
-Repositorio GitHub:
-
-https://github.com/CarlosSDT1/ProyectoSolar
+El proyecto permite visualizar plantas solares, registrar datos energéticos, gestionar usuarios y mostrar estadísticas mediante gráficos.
 
 ---
 
@@ -22,104 +10,46 @@ https://github.com/CarlosSDT1/ProyectoSolar
 
 ## Autenticación
 
-- Registro de usuarios con Supabase
-- Inicio y cierre de sesión
-- Gestión de perfil de usuario
-- Configuración de **username**
-- Subida de **avatar**
-- Persistencia de sesión
+* Registro de usuarios
+* Inicio y cierre de sesión
+* Gestión de perfil
+* Configuración de username y avatar
 
----
+## Gestión de plantas
 
-## Gestión de plantas solares
-
-- Crear plantas solares
-- Editar plantas
-- Eliminar plantas
-- Subir imágenes de plantas
-- Marcar plantas como favoritas
-- Visualización en lista y tarjetas
-- Vista detalle de cada planta
-
-### Control de propietarios
-
-- Los **usuarios normales** solo pueden crear plantas para ellos mismos
-- Los **administradores** pueden asignar una planta a cualquier usuario
-
----
+* Crear plantas solares
+* Editar plantas
+* Eliminar plantas
+* Subir imágenes de plantas
+* Marcar plantas como favoritas
 
 ## Registros de energía
 
-Cada planta puede almacenar registros energéticos.
+* Crear registros de generación y consumo
+* Editar registros
+* Eliminar registros
+* Visualización de datos históricos
 
-- Crear registros de generación y consumo
-- Editar registros
-- Eliminar registros
-- Visualizar registros históricos
+## Gráficos
 
----
+* Visualización de generación y consumo
+* Implementado con Chart.js
 
-## Gráficos de datos
+## Búsqueda
 
-Visualización de los datos energéticos mediante gráficos.
-
-- Generación energética
-- Consumo energético
-- Evolución temporal
-
-Implementado con **Chart.js**.
-
----
-
-## Búsqueda y paginación
-
-- Filtrado de plantas por nombre
-- Búsqueda reactiva
-- Paginación de resultados
-- Navegación mediante parámetros de ruta
-
----
-
-## Personalización de interfaz
-
-La aplicación permite cambiar el tema visual.
-
-- Cambio de tema **Dark / Light**
-- Implementado con **DaisyUI**
-- El tema se guarda en **localStorage**
-
----
+* Filtrar plantas por nombre
+* Búsqueda reactiva en la lista de plantas
 
 ## Seguridad
 
-El sistema utiliza **Row Level Security (RLS)** en Supabase.
-
-- Solo el propietario puede modificar su planta
-- Los administradores pueden gestionar cualquier planta
-- Control de acceso a registros energéticos
-- Protección de datos mediante políticas de base de datos
-
----
+* Row Level Security (RLS) en Supabase
+* Solo el propietario o un administrador puede modificar plantas
+* Control de acceso para registros
 
 ## Roles de usuario
 
-Existen dos tipos de usuarios:
-
-### Usuario normal
-
-Puede:
-
-- Crear plantas propias
-- Gestionar sus registros
-- Editar su perfil
-
-### Administrador
-
-Puede:
-
-- Gestionar todas las plantas
-- Gestionar registros de cualquier planta
-- Cambiar el propietario de una planta
+* Usuario normal
+* Administrador
 
 ---
 
@@ -127,28 +57,22 @@ Puede:
 
 ## Frontend
 
-- Angular
-- Angular Signals
-- TypeScript
-- Chart.js
-- TailwindCSS
-- DaisyUI
-
----
+* Angular
+* Angular Signals
+* TypeScript
+* Chart.js
+* Tailwind / DaisyUI
 
 ## Backend
 
-- Supabase
-- PostgreSQL
-- Supabase Storage
-- Supabase Auth
-
----
+* Supabase
+* PostgreSQL
+* Supabase Storage
 
 ## Control de versiones
 
-- Git
-- GitHub
+* Git
+* GitHub
 
 ---
 
@@ -159,7 +83,7 @@ Puede:
 Contiene la información de las plantas solares.
 
 | Campo      | Tipo      |
-|------------|-----------|
+| ---------- | --------- |
 | id         | integer   |
 | nom        | text      |
 | ubicacion  | json      |
@@ -176,7 +100,7 @@ Contiene la información de las plantas solares.
 Contiene los registros de producción energética.
 
 | Campo      | Tipo      |
-|------------|-----------|
+| ---------- | --------- |
 | id         | integer   |
 | planta     | integer   |
 | generacio  | number    |
@@ -190,7 +114,7 @@ Contiene los registros de producción energética.
 Información adicional de los usuarios.
 
 | Campo      | Tipo |
-|------------|------|
+| ---------- | ---- |
 | id         | uuid |
 | username   | text |
 | avatar_url | text |
@@ -205,65 +129,65 @@ Información adicional de los usuarios.
 ## 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/CarlosSDT1/ProyectoSolar.git
-2. Instalar dependencias
+git clone https://github.com/tu-usuario/solar-plants-manager.git
+```
+
+## 2. Instalar dependencias
+
+```bash
 npm install
-3. Configurar variables de entorno
+```
+
+## 3. Configurar variables de entorno
 
 Crear el archivo:
 
+```
 src/environments/environment.ts
+```
 
 Ejemplo:
 
+```ts
 export const environment = {
   production: false,
   SUPABASE_URL: 'https://xxxx.supabase.co',
   SUPABASE_KEY: 'public-anon-key'
 };
-4. Ejecutar el proyecto
+```
+
+## 4. Ejecutar el proyecto
+
+```bash
 ng serve
+```
 
 La aplicación estará disponible en:
 
+```
 http://localhost:4200
-Almacenamiento de imágenes
+```
 
-Las imágenes de plantas y avatares se almacenan en Supabase Storage.
+---
 
-Actualmente:
+# Funcionalidades principales
 
-Los avatares de usuario se almacenan en Supabase
+## Usuario
 
-Las imágenes de plantas nuevas también se almacenan en Supabase
+* Crear cuenta
+* Iniciar sesión
+* Editar perfil
+* Subir avatar
+* Crear y gestionar plantas propias
 
-Algunas imágenes antiguas pueden estar almacenadas mediante URL externas porque esta funcionalidad se implementó posteriormente.
+## Administrador
 
-Funcionalidades principales
-Usuario
+* Gestionar todas las plantas
+* Gestionar registros de cualquier planta
+* Cambiar propietario de plantas
 
-Crear cuenta
+---
 
-Iniciar sesión
+# Almacenamiento de imágenes
 
-Editar perfil
-
-Subir avatar
-
-Crear y gestionar plantas propias
-
-Añadir registros energéticos
-
-Administrador
-
-Gestionar todas las plantas
-
-Gestionar registros de cualquier planta
-
-Cambiar el propietario de plantas
-
-Asignar plantas a otros usuarios
-
-Autor
-
-Proyecto desarrollado por Carlos S.D.T como aplicación de gestión de plantas solares utilizando Angular y Supabase.
+Las imágenes de plantas y avatares se almacenan en supabase(Algunas de ellas no todas porque esto lo implemente mas tarde y no me he puesto a descargarlas y cambiarlas a supabase)
