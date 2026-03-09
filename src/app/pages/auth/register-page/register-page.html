@@ -65,6 +65,13 @@
           class="input input-bordered w-full"
           placeholder="Nombre de usuario"
           formControlName="username">
+
+        @if (myForm.get('username')?.invalid && myForm.get('username')?.touched) {
+          <p class="mt-1.5 text-sm text-error flex items-center">
+            <i class="fas fa-exclamation-triangle mr-1.5"></i>
+            {{ formUtils.getFieldError(myForm, 'username') }}
+          </p>
+        }
       </div>
 
       <!-- Campo Contraseña -->

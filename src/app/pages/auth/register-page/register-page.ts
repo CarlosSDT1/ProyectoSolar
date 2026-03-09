@@ -61,35 +61,41 @@ export class RegisterPage {
 
   onSubmit() {
 
-    this.myForm.markAllAsTouched();
+  this.myForm.markAllAsTouched();
 
-    if (this.myForm.invalid) return;
+  if (this.myForm.invalid) return;
 
-    const registerData = this.myForm.value;
+  const registerData = this.myForm.value;
 
-    this.authService.register(
-      registerData.email,
-      registerData.password,
-      registerData.username
-    )
-    .then((response:any) => {
-      console.log('Register exitoso:', response);
+  this.authService.register(
+    registerData.email,
+    registerData.password,
+    registerData.username
+  )
+  .then((response:any) => {
+
+    console.log('Register exitoso:', response);
+
+    if (response.session) {
       this.router.navigate(['/home']);
-    })
-    .catch((error: { message: string; }) => {
+    } else {
+      console.log('Usuario creado');
+      this.router.navigate(['/login']);
+    }
 
-      console.error('Error en register:', error);
+  })
+  .catch((error: { message: string; }) => {
 
-      if (error.message) {
-        this.registerError = 'Error al registrar el usuario';
-      } else {
-        this.registerError = 'Error al iniciar sesión. Por favor, intenta nuevamente';
-      }
+    console.error('Error en register:', error);
 
-    });
+    if (error.message) {
+      this.registerError = 'Error al registrar el usuario';
+    } else {
+      this.registerError = 'Error al iniciar sesión. Por favor, intenta nuevamente';
+    }
 
-    console.log(this.myForm.value);
+  });
 
-  }
+}
 
 }
