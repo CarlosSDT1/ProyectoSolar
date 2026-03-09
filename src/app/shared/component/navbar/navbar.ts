@@ -49,6 +49,11 @@ export class Navbar {
       this.session.set(currentSession);
       this.loadProfile(currentSession.user.id);
     }
+
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    }
   }
 
   async loadProfile(userId: string) {
@@ -82,4 +87,18 @@ export class Navbar {
   goToProfile() {
     this.router.navigate(['/profile']);
   }
+
+  toggleTheme() {
+  const html = document.documentElement;
+
+  const currentTheme = html.getAttribute('data-theme');
+
+  if (currentTheme === 'aqua') {
+    html.setAttribute('data-theme', 'dracula');
+    localStorage.setItem('theme', 'dracula');
+  } else {
+    html.setAttribute('data-theme', 'aqua');
+    localStorage.setItem('theme', 'aqua');
+  }
+}
 }

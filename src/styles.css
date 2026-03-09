@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-   themes: dracula --default, dark --prefersabyss, light , synthwave ;
+   themes: dracula --default, dark --prefersabyss, light , synthwave, nord, caramellate, aqua ;
  }
 
 .menu li a.active {
