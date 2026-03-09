@@ -18,21 +18,35 @@ export class AuthService {
 }
 
   async register(email: string, password: string, username: string) {
-    const { data, error } = await this.supabase.auth.signUp({
-      email,
-      password
-    });
+  const { data, error } = await this.supabase.auth.signUp({
+    email,
+    password
+  });
 
-    if (error) {
-      console.error('Error en Register:', error);
-      throw error;
+  if (error) {
+    console.error('Error en Register:', error);
+    throw error;
+  }
+
+  if (data.user) {
+    const userId = data.user.id;
+
+    const { data: existingProfile, error: selectError } = await this.supabase
+      .from('profiles')
+      .select('id')
+      .eq('id', userId)
+      .maybeSingle();
+
+    if (selectError) {
+      console.error('Error comprobando perfil existente:', selectError);
+      throw selectError;
     }
 
-    if (data.user) {
+    if (!existingProfile) {
       const { error: profileError } = await this.supabase
         .from('profiles')
-        .upsert({
-          id: data.user.id,
+        .insert({
+          id: userId,
           username: username
         });
 
@@ -40,10 +54,23 @@ export class AuthService {
         console.error('Error creando perfil:', profileError);
         throw profileError;
       }
-    }
+    } else {
+      const { error: updateError } = await this.supabase
+        .from('profiles')
+        .update({
+          username: username
+        })
+        .eq('id', userId);
 
-    return data;
+      if (updateError) {
+        console.error('Error actualizando perfil existente:', updateError);
+        throw updateError;
+      }
+    }
   }
+
+  return data;
+}
 
   async login(email: string, password: string) {
     const { data, error } = await this.supabase.auth.signInWithPassword({
