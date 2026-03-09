@@ -184,6 +184,7 @@ http://localhost:4200
 
 * Gestionar todas las plantas
 * Gestionar registros de cualquier planta
+* Cambiar propietario de plantas
 
 ---
 
