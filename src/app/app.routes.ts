@@ -1,13 +1,13 @@
 import { Routes } from '@angular/router';
-import HomePage from './shared/pages/home-page/home-page';
-import PrincipalPlacas from './shared/pages/principal-placas/principal-placas';
-import { PlantesDetall } from './pages/plantes-detall/plantes-detall';
-import PlantasList from './components/plantas-list/plantas-list';
-import { LoginPage } from './pages/auth/login-page/login-page';
-import { RegisterPage } from './pages/auth/register-page/register-page';
-import { userGuard } from './guards/user-guard-guard';
-import AdminTabla from './components/admin-tabla/admin-tabla';
-import ProfilePage from './components/profile-page/profile-page';
+import { userGuard } from './core/guards/user-guard-guard';
+import AdminTabla from './features/admin/pages/admin-tabla/admin-tabla';
+import { LoginPage } from './features/auth/pages/login-page/login-page';
+import { RegisterPage } from './features/auth/pages/register-page/register-page';
+import HomePage from './features/main/pages/home-page/home-page';
+import PrincipalPlacas from './features/main/pages/principal-placas/principal-placas';
+import { PlantesDetall } from './features/plantas/pages/plantes-detall/plantes-detall';
+import ProfilePage from './features/profile/pages/profile-page/profile-page';
+
 
 
 export const routes: Routes = [

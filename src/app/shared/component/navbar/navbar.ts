@@ -1,9 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from "@angular/router";
 import { Session } from '@supabase/supabase-js';
-import { AuthService } from '../../../services/authservice';
 import { FormsModule } from '@angular/forms';
-import { Supaservice } from '../../../services/supaservice';
+import { Supaservice } from '../../../core/services/supaservice';
+import { AuthService } from '../../../features/auth/services/authservice';
+
 
 type UserProfile = {
   id: string;
