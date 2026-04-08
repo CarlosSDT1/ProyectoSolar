@@ -5,7 +5,7 @@ import { PaginationService } from '../../../../shared/component/pagination/pagin
 import { AuthService } from '../../../auth/services/authservice';
 import { registre } from '../../../../shared/interface/registre.interface';
 import { NotFound } from '../../../main/pages/not-found/not-found';
-import { AdminRegistreEdit } from '../../../auth/pages/admin-registre-edit/admin-registre-edit';
+import { AdminRegistreEdit } from '../../../admin/pages/admin-registre-edit/admin-registre-edit';
 
 
 @Component({
