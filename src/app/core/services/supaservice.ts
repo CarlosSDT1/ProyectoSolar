@@ -462,25 +462,8 @@ export class Supaservice {
   }
 
   async uploadImage(file: File, plantaId: number): Promise<string> {
-  const fileExt = file.name.split('.').pop();
-  const fileName = `${plantaId}-${Date.now()}.${fileExt}`;
-  const filePath = `plantas/${fileName}`;
-
-  const { error: uploadError } = await this.supabase.storage
-    .from('imagenes')
-    .upload(filePath, file);
-
-  if (uploadError) {
-    console.error('Error subiendo imagen:', uploadError);
-    throw uploadError;
+    return this.uploadOptimizedFile(file, 'plantas', plantaId, 600);
   }
-
-  const { data: { publicUrl } } = this.supabase.storage
-    .from('imagenes')
-    .getPublicUrl(filePath);
-
-  return publicUrl;
-}
 
   async getProfilesSupabase(): Promise<{ id: string; username: string | null }[]> {
   const { data, error } = await this.supabase
@@ -560,26 +543,112 @@ async updateProfile(
   return data;
 }
 
-async uploadAvatar(file: File, userId: string): Promise<string> {
-  const fileExt = file.name.split('.').pop();
-  const fileName = `${userId}-${Date.now()}.${fileExt}`;
-  const filePath = `avatars/${fileName}`;
-
-  const { error: uploadError } = await this.supabase.storage
-    .from('imagenes')
-    .upload(filePath, file);
-
-  if (uploadError) {
-    console.error('Error subiendo avatar:', uploadError);
-    throw uploadError;
+  async uploadAvatar(file: File, userId: string): Promise<string> {
+    return this.uploadOptimizedFile(file, 'avatars', userId, 256);
   }
 
-  const {
-    data: { publicUrl }
-  } = this.supabase.storage
-    .from('imagenes')
-    .getPublicUrl(filePath);
+private async optimizeImage(
+  file: File,
+  maxWidth: number = 800,
+  quality: number = 0.8
+): Promise<File> {
+  return new Promise((resolve, reject) => {
+    if (!file.type.startsWith('image/')) {
+      reject(new Error('El archivo no es una imagen válida.'));
+      return;
+    }
 
-  return publicUrl;
+    const reader = new FileReader();
+    const img = new Image();
+
+    reader.onload = () => {
+      img.src = reader.result as string;
+    };
+
+    reader.onerror = () => {
+      reject(new Error('No se pudo leer la imagen.'));
+    };
+
+    img.onload = () => {
+      const originalWidth = img.width;
+      const originalHeight = img.height;
+
+      const targetWidth =
+        originalWidth > maxWidth ? maxWidth : originalWidth;
+
+      const scale = targetWidth / originalWidth;
+      const targetHeight = Math.round(originalHeight * scale);
+
+      const canvas = document.createElement('canvas');
+      canvas.width = targetWidth;
+      canvas.height = targetHeight;
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        reject(new Error('No se pudo crear el contexto del canvas.'));
+        return;
+      }
+
+      ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) {
+            reject(new Error('No se pudo convertir la imagen a WebP.'));
+            return;
+          }
+
+          const webpName = file.name.replace(/\.[^.]+$/, '') + '.webp';
+
+          const optimizedFile = new File([blob], webpName, {
+            type: 'image/webp',
+            lastModified: Date.now(),
+          });
+
+          resolve(optimizedFile);
+        },
+        'image/webp',
+        quality
+      );
+    };
+
+    img.onerror = () => {
+      reject(new Error('La imagen no pudo cargarse correctamente.'));
+    };
+
+    reader.readAsDataURL(file);
+  });
 }
+
+  private async uploadOptimizedFile(
+    file: File,
+    folder: string,
+    entityId: string | number,
+    maxWidth: number
+  ): Promise<string> {
+    const optimizedFile = await this.optimizeImage(file, maxWidth, 0.8);
+    const fileName = `${entityId}-${Date.now()}.webp`;
+    const filePath = `${folder}/${fileName}`;
+
+    const { error: uploadError } = await this.supabase.storage
+      .from('imagenes')
+      .upload(filePath, optimizedFile, {
+        contentType: 'image/webp',
+        upsert: false,
+      });
+
+    if (uploadError) {
+      console.error('Error subiendo imagen optimizada:', uploadError);
+      throw uploadError;
+    }
+
+    const {
+      data: { publicUrl }
+    } = this.supabase.storage
+      .from('imagenes')
+      .getPublicUrl(filePath);
+
+    return publicUrl;
+  }
+
 }
