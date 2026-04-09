@@ -9,43 +9,45 @@ import { PlantesDetall } from './features/plantas/pages/plantes-detall/plantes-d
 import ProfilePage from './features/profile/pages/profile-page/profile-page';
 
 
-
 export const routes: Routes = [
-
-
   {
-    path:'home',
-    component:HomePage
+    path: 'home',
+    loadChildren: () =>
+      import('./features/main/main.routes').then((m) => m.MAIN_ROUTES),
   },
   {
-    path:'plantas',
-    component:PrincipalPlacas,
-    canActivate:[userGuard],
+    path: 'plantas',
+    loadChildren: () =>
+      import('./features/plantas/plantas.routes').then((m) => m.PLANTAS_ROUTES),
   },
   {
-    path:'tabla',
-    component:AdminTabla,
-    canActivate:[userGuard],
+    path: 'tabla',
+    loadChildren: () =>
+      import('./features/admin/admin.routes').then((m) => m.ADMIN_ROUTES),
   },
   {
     path: 'profile',
-    component: ProfilePage,
-    canActivate: [userGuard],
+    loadChildren: () =>
+      import('./features/profile/profile.routes').then((m) => m.PROFILE_ROUTES),
   },
   {
-    path:'login',
-    component:LoginPage
+    path: 'login',
+    loadComponent: () =>
+      import('./features/auth/pages/login-page/login-page').then((m) => m.LoginPage),
   },
   {
-    path:'register',
-    component:RegisterPage
+    path: 'register',
+    loadComponent: () =>
+      import('./features/auth/pages/register-page/register-page').then((m) => m.RegisterPage),
   },
   {
-    path:'planta/:id',
-    component:PlantesDetall,
+    path: 'planta',
+    loadChildren: () =>
+      import('./features/plantas/plantas.routes').then((m) => m.PLANTAS_ROUTES),
   },
   {
-    path:'**',
-    redirectTo:'home', pathMatch: 'full'
-  }
+    path: '**',
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
 ];
