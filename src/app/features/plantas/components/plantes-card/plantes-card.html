@@ -1,36 +1,46 @@
-
-  <div class="card bg-base-100 w-96 shadow-sm border-2"
+<div
+  class="card bg-base-100 w-96 min-h-[350px] shadow-sm border-2"
   [class.border-amber-400]="planta().favorite"
   [class.bg-red-400]="planta().favorite"
-  >
-  <figure>
+>
+  <figure class="w-full">
     @if (planta().foto) {
-      <img [src]="planta().foto"
-          [alt]="planta().nom"
-          class="w-34 h-34 object-cover rounded">
+      <img
+        [src]="planta().foto"
+        [alt]="planta().nom"
+        class="w-full h-[200px] object-cover rounded"
+        loading="lazy"
+      >
     } @else {
-      <div class="w-34 h-34 bg-gray-200 rounded flex items-center justify-center">
+      <div class="w-full h-[200px] bg-gray-200 rounded flex items-center justify-center">
         <span class="text-gray-400 text-2xl">⚡</span>
       </div>
     }
   </figure>
+
   <div class="card-body">
-    <h2 class="card-title">{{planta().id }}</h2>
-    <h2 class="card-title">{{planta().nom }}</h2>
+    <h2 class="card-title">{{ planta().id }}</h2>
+    <h2 class="card-title">{{ planta().nom }}</h2>
+
     <p class="text-xs font-mono">
-    {{ planta().ubicacion.latitude | number:'1.4-4' }},
-    {{ planta().ubicacion.longitude | number:'1.4-4' }}
+      {{ planta().ubicacion.latitude | number:'1.4-4' }},
+      {{ planta().ubicacion.longitude | number:'1.4-4' }}
     </p>
+
     <p>
       <b>Fecha instalacion:</b> {{ planta().created_at | date:'dd/MM/yyyy' }}
     </p>
+
     <div class="card-actions justify-end">
-      <button class="btn btn-secondary" (click)="toggleFavorite()">  {{ planta().favorite ? '★' : '☆' }}</button>
-    </div>
-    <div class="card-actions justify-end">
-      <button class="btn btn-primary" routerLink="/planta/{{planta().id}}">Información</button>
+      <button class="btn btn-secondary" (click)="toggleFavorite()">
+        {{ planta().favorite ? '★' : '☆' }}
+      </button>
     </div>
 
+    <div class="card-actions justify-end">
+      <button class="btn btn-primary" [routerLink]="['/planta', planta().id]">
+        Información
+      </button>
+    </div>
   </div>
 </div>
-
