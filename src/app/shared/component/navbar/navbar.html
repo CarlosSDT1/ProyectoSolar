@@ -1,5 +1,5 @@
-<div class="navbar bg-base-100 shadow-sm">
-  <div class="navbar-start">
+<div class="navbar bg-base-100 shadow-sm min-h-16 px-4">
+  <div class="navbar-start min-w-[140px]">
     <div class="dropdown">
       <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -27,77 +27,83 @@
     </div>
 
     <div class="divider divider-horizontal mx-2"></div>
+
     <button
       class="btn btn-square btn-ghost"
       (click)="toggleTheme()">
-
       <svg xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          fill="currentColor"
-          viewBox="0 0 16 16">
+           width="20"
+           height="20"
+           fill="currentColor"
+           viewBox="0 0 16 16">
         <path d="M8 1a7 7 0 1 0 7 7A7 7 0 0 0 8 1z"/>
       </svg>
-
     </button>
   </div>
 
-  <div class="navbar-center">
-    <a [routerLink]="['/']" class="btn btn-ghost text-xl cursor-pointer">
+  <div class="navbar-center flex-1">
+    <a [routerLink]="['/']"
+       class="btn btn-ghost text-xl cursor-pointer whitespace-nowrap">
       Proyecto Placa Solar
     </a>
   </div>
 
-  <div class="navbar-end">
+  <div class="navbar-end min-w-[420px] flex justify-end">
     @if (session()) {
-      <div class="flex items-center gap-4">
-        <form role="search">
+      <div class="flex items-center gap-4 w-full justify-end">
+        <form role="search" class="w-[160px]">
           <input
-            class="input input-bordered input-sm"
+            class="input input-bordered input-sm w-full"
             type="search"
             placeholder="search"
             aria-label="search"
             [(ngModel)]="searchString"
             [ngModelOptions]="{standalone: true}"
-            (ngModelChange)="search($event)"/>
+            (ngModelChange)="search($event)" />
         </form>
 
         <button
           type="button"
-          class="btn btn-ghost flex items-center gap-2"
+          class="btn btn-ghost flex items-center gap-2 w-[190px] justify-start overflow-hidden"
           (click)="goToProfile()">
 
           @if (profile()?.avatar_url) {
             <img
               [src]="profile()!.avatar_url!"
               alt="Avatar"
-              class="w-8 h-8 rounded-full object-cover border">
+              width="32"
+              height="32"
+              class="w-8 h-8 rounded-full object-cover border shrink-0">
           } @else {
-            <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm">
+            <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm shrink-0">
               👤
             </div>
           }
 
-          <span>{{ getDisplayName() }}</span>
+          <span class="truncate block w-[130px] text-left">
+            {{ getDisplayName() }}
+          </span>
         </button>
 
-        <button (click)="logout()" class="text-error">
+        <button
+          (click)="logout()"
+          class="btn btn-ghost text-error w-[140px] justify-start">
           <i class="fas fa-sign-out-alt mr-2"></i>
           Cerrar Sesión
         </button>
       </div>
     } @else {
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-4 w-full justify-end">
         <a [routerLink]="['/login']"
            routerLinkActive="active"
            [routerLinkActiveOptions]="{exact: true}"
-           class="btn btn-ghost">
+           class="btn btn-ghost w-[100px] justify-center">
           Login
         </a>
         <a [routerLink]="['/register']"
            routerLinkActive="active"
            [routerLinkActiveOptions]="{exact: true}"
-           class="btn btn-ghost">
+           class="btn btn-ghost w-[100px] justify-center">
           Register
         </a>
       </div>
