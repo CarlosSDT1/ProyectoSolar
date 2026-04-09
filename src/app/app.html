@@ -1,8 +1,12 @@
 
 <main class="m-auto flex-grow flex flex-col min-h-screen">
-  <app-navbar/>
-  <router-outlet/>
+  <div class="min-h-screen flex flex-col">
+  <app-navbar></app-navbar>
 
-  <div class="flex-1 flex-grow"></div>
-  <app-footer/>
+  <main class="flex-1">
+    <router-outlet></router-outlet>
+  </main>
+
+  <app-footer></app-footer>
+</div>
 </main>
