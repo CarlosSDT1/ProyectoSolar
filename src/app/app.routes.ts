@@ -20,17 +20,17 @@ export const routes: Routes = [
   {
     path:'plantas',
     component:PrincipalPlacas,
-    canActivate:[userGuard],
+    //canActivate:[userGuard],
   },
   {
     path:'tabla',
     component:AdminTabla,
-    canActivate:[userGuard],
+    //canActivate:[userGuard],
   },
   {
     path: 'profile',
     component: ProfilePage,
-    canActivate: [userGuard],
+    //canActivate: [userGuard],
   },
   {
     path:'login',
